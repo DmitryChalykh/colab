@@ -1,0 +1,37 @@
+1.
+import pandas as pd
+
+def classify_movies(ratings_df):  
+    def classify_rating(rating):
+        if rating <= 2:
+            return 'низкий рейтинг'
+        elif rating <= 4:
+            return 'средний рейтинг'
+        else: 
+            return 'высокий рейтинг'
+    ratings_df['class'] = ratings_df['rating'].apply(classify_rating)  
+    return ratings_df
+
+ratings = pd.read_csv('ratings.csv')
+ratings_with_class = classify_movies(ratings)
+
+2. 
+
+import pandas as pd
+
+def geo_classifier(keywords_df):
+    city_to_region = {}
+    for region, cities in geo_data.items():
+        for city in cities:
+            city_to_region[city] = region
+    def find_region(keyword):
+        keyword_lower = keyword.lower()
+        for city, region in city_to_region.items():
+            if city in keyword_lower:
+                return region
+        return 'undefined'
+    keywords_df['region'] = keywords_df['keyword'].apply(find_region)
+    return keywords_df
+
+keywords = pd.read_csv('keywords.csv')
+keywords_with_region = geo_classifier(keywords)
