@@ -1,0 +1,54 @@
+1.
+
+import pandas as pd
+
+movies = pd.read_csv('movies.csv')
+ratings = pd.read_csv('ratings.csv')
+
+ratings_5 = ratings[ratings['rating'] == 5.0]
+
+movie_ratings_count = ratings_5.groupby('movieId').size().reset_index(name='count_5_stars')
+
+movie_ratings_count = movie_ratings_count.sort_values('count_5_stars', ascending=False)
+
+result = pd.merge(movie_ratings_count, movies[['movieId', 'title']], on='movieId')
+
+top_movie = result.head(1)
+
+print(f"Название: {top_movie['title'].values[0]}")
+
+
+2.
+
+import pandas as pd
+
+df = pd.read_csv('power.csv')
+
+baltic_countries = ['Latvia', 'Lithuania', 'Estonia']
+categories = [4, 12, 21]
+start_year, end_year = 2005, 2011
+
+filtered_data = df[
+    (df['country'].isin(baltic_countries)) &
+    (df['category'].isin(categories)) &
+    (df['year'].between(start_year, end_year)) &
+    (df['quantity'] > 0)
+]
+
+total_consumption = filtered_data['quantity'].sum()
+
+print(f"Суммарное потребление: {total_consumption:,.0f}")
+
+
+3. Список компаний S&P 500 по данным из Википедии
+
+import pandas as pd
+
+url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+
+tables = pd.read_html(url)
+
+sp500_df = tables[0]
+
+print("Таблица компаний S&P 500:")
+print(sp500_df.head())
